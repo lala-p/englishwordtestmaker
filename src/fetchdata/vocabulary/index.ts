@@ -13,7 +13,7 @@ export interface getVocabularyListT {
 	pagination?: PaginationT
 }
 export const getVocabularyList = async (params: { limit: number; offset: number; pagination?: boolean }): Promise<getVocabularyListT> => {
-	// await sleep(1000)
+	await sleep(1000)
 
 	let responseData: getVocabularyListT = {
 		list: vocabularyDataArr.slice(params.offset, params.offset + params.limit),
