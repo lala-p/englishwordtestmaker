@@ -11,7 +11,7 @@ const PaginationLinkNav = (props: {
 		props.currentPage - (props.currentPage % props.pageLimitSize == 0 ? props.pageLimitSize : props.currentPage % props.pageLimitSize) + 1
 	const rowEndPage = props.currentPage + (props.pageLimitSize - (props.currentPage % props.pageLimitSize))
 	const isOneRow = props.lastPage <= props.pageLimitSize
-	const pageRowArr = Array.from({ length: isOneRow ? props.lastPage : props.pageLimitSize }, (v, i) => rowStartPage + i)
+	const pageRowArr = Array.from({ length: isOneRow ? props.lastPage : props.pageLimitSize }, (_v, i) => rowStartPage + i)
 
 	const scrollTop = () => {
 		window.scrollTo(0, 0)
