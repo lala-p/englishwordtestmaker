@@ -1,12 +1,6 @@
 import { Link } from "react-router-dom"
 
-const PaginationLinkNav = (props: {
-	className?: string
-	currentPage: number
-	lastPage: number
-	pageLimitSize: number
-	makePageLinkFun: (page: number) => string
-}) => {
+const PaginationLinkNav = (props: { currentPage: number; lastPage: number; pageLimitSize: number; makePageLinkFun: (page: number) => string }) => {
 	const rowStartPage =
 		props.currentPage - (props.currentPage % props.pageLimitSize == 0 ? props.pageLimitSize : props.currentPage % props.pageLimitSize) + 1
 	const rowEndPage = props.currentPage + (props.pageLimitSize - (props.currentPage % props.pageLimitSize))
@@ -18,7 +12,7 @@ const PaginationLinkNav = (props: {
 	}
 
 	return (
-		<div className={`join ${props.className ?? ""}`}>
+		<div className={`join`}>
 			{!isOneRow ? (
 				!pageRowArr.includes(1) ? (
 					<>
@@ -46,13 +40,21 @@ const PaginationLinkNav = (props: {
 			) : null}
 
 			{pageRowArr.map((page) => {
-				return (
-					<Link key={page} to={props.makePageLinkFun(page)}>
-						<button className={`join-item btn ${page == props.currentPage ? "btn-active" : ""}`} onClick={scrollTop}>
+				if (page == props.currentPage) {
+					return (
+						<button key={page} className={`join-item btn btn-ghost btn-active`} onClick={scrollTop}>
 							{page}
 						</button>
-					</Link>
-				)
+					)
+				} else {
+					return (
+						<Link key={page} to={props.makePageLinkFun(page)}>
+							<button className={`join-item btn btn-ghost`} onClick={scrollTop}>
+								{page}
+							</button>
+						</Link>
+					)
+				}
 			})}
 
 			{!isOneRow ? (

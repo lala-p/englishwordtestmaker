@@ -2,11 +2,12 @@ import { ReactNode, useCallback } from "react"
 import { Link, useSearchParams } from "react-router-dom"
 import { useQuery, UseQueryResult } from "@tanstack/react-query"
 
+import { Header, MainContainer } from "../common/semantic"
 import { getVocabularyList, getVocabularyListT } from "../../fetchdata/vocabulary"
 import { Pagination, PaginationLinkNav } from "../common/paginationNav/index,"
 
 const setting = {
-	limit: 20,
+	limit: 30,
 }
 
 const VocabularyList = () => {
@@ -41,7 +42,7 @@ const VocabularyList = () => {
 						<tbody>
 							{props.query.data.list.map((vocabularyData) => {
 								return (
-									<tr key={vocabularyData.id} className="hover">
+									<tr key={vocabularyData.id} className="hover hover:bg-">
 										<td className="text-center w-0">{vocabularyData.id}</td>
 										<td className="text-center w-48">{vocabularyData.word}</td>
 										<td className="text-left">{vocabularyData.meaning}</td>
@@ -76,46 +77,12 @@ const VocabularyList = () => {
 
 	return (
 		<>
-			<h1>VocabularyList</h1>
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<div className="max-w-5xl m-auto flex flex-col gap-12 items-center">
-				<TableAndPagination query={vocabularyListQuery} />
-			</div>
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
+			<Header subTitle="Basic Vocabulary List" />
+			<MainContainer>
+				<div className="max-w-5xl m-auto flex flex-col gap-12 items-center">
+					<TableAndPagination query={vocabularyListQuery} />
+				</div>
+			</MainContainer>
 		</>
 	)
 }

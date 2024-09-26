@@ -8,6 +8,6 @@ export default {
 	},
 	plugins: [daisyui],
 	daisyui: {
-		themes: ["lofi", "black"],
+		themes: ["lofi", "night", "dim"],
 	},
 }
