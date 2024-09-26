@@ -7,7 +7,7 @@ import { getVocabularyList, getVocabularyListT } from "../../fetchdata/vocabular
 import { Pagination, PaginationLinkNav } from "../common/paginationNav/index,"
 
 const setting = {
-	limit: 30,
+	limit: 50,
 }
 
 const VocabularyList = () => {
@@ -48,7 +48,7 @@ const VocabularyList = () => {
 										<td className="text-left">{vocabularyData.meaning}</td>
 										<td className="text-right w-48">
 											{vocabularyData.dictionaryLink !== undefined ? (
-												<Link to={vocabularyData.dictionaryLink} className="link link-info">
+												<Link to={vocabularyData.dictionaryLink} target="_blank" className="link link-info">
 													{vocabularyData.word}
 												</Link>
 											) : (
@@ -79,7 +79,7 @@ const VocabularyList = () => {
 		<>
 			<Header subTitle="Basic Vocabulary List" />
 			<MainContainer>
-				<div className="max-w-5xl m-auto flex flex-col gap-12 items-center">
+				<div className="max-w-5xl m-auto py-20 flex flex-col gap-12 items-center">
 					<TableAndPagination query={vocabularyListQuery} />
 				</div>
 			</MainContainer>
