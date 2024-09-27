@@ -1,7 +1,7 @@
 import React from "react"
 import { Link } from "react-router-dom"
 
-import useThemeStore from "../../../hooks/themeStore"
+import useThemeStore from "../../../hooks/useThemeStore"
 
 const Header = (props: { subTitle?: string }) => {
 	const { theme, setTheme } = useThemeStore()

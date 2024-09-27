@@ -40,7 +40,7 @@ const useThemeStore = create<StateT & ActionsT>((set) => ({
 
 		if (savedTheme !== null && (savedTheme == "light" || savedTheme == "dark")) {
 			changedTheme = savedTheme
-		} else if (!!window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+		} else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
 			changedTheme = "dark"
 		}
 
