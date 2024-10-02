@@ -25,10 +25,11 @@ type StateT = {
 
 type ActionsT = {
 	initTheme: () => void
+	// eslint-disable-next-line no-unused-vars
 	setTheme: (theme: ThemeT) => void
 }
 
-let initialState: StateT = {
+const initialState: StateT = {
 	theme: "light",
 }
 

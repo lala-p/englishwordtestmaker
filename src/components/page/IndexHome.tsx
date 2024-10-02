@@ -12,7 +12,7 @@ const IndexHome = () => {
 						Word Test With Basic Vocabulary List
 					</Link>
 					<Link to={`/vocabularylist`} className="btn btn-block glass bg-primary text-primary-content hover:bg-primary hover:bg-opacity-70">
-						Basic Vocabulary List
+						The Vocabulary List Offered Free
 					</Link>
 				</div>
 			</MainContainer>

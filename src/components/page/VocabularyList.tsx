@@ -1,32 +1,36 @@
-import { ReactNode, useCallback } from "react"
-import { Link, useSearchParams } from "react-router-dom"
+import { ReactNode, useCallback, useMemo } from "react"
+import { Link, useParams, useSearchParams } from "react-router-dom"
 import { useQuery, UseQueryResult } from "@tanstack/react-query"
 
 import { Header, MainContainer } from "../common/semantic"
-import { getVocabularyList, getVocabularyListT } from "../../fetchdata/vocabulary"
+import { VocabularyT, getVocabularyList } from "../../fetchdata/vocabulary"
 import { Pagination, PaginationLinkNav } from "../common/paginationNav/index,"
 
 const setting = {
-	limit: 50,
+	pageSize: 50,
 }
 
 const VocabularyList = () => {
+	const { vocabularylistId } = useParams()
 	const [searchParams] = useSearchParams()
-	const pagination = new Pagination(searchParams.get("page"), setting.limit)
 
-	const vocabularyListQuery = useQuery<getVocabularyListT>({
+	const pagination = useMemo(() => {
+		return new Pagination(searchParams.get("page"), setting.pageSize)
+	}, [searchParams])
+
+	const vocabularyListQuery = useQuery({
 		queryKey: ["getVocabularyList", searchParams.toString()],
-		queryFn: () => getVocabularyList({ limit: setting.limit, offset: pagination.getPageOffset(), pagination: true }),
+		queryFn: () => getVocabularyList({ id: vocabularylistId ?? "helloword", page: pagination.currentPage, pageSize: setting.pageSize }),
 	})
 
 	const TableAndPagination = useCallback(
-		(props: { query: UseQueryResult<getVocabularyListT> }): ReactNode => {
+		(props: { query: UseQueryResult<{ dataArr: VocabularyT[]; totalCount: number }> }): ReactNode => {
 			if (props.query.isPending) return "Loading..."
 
 			if (props.query.error || props.query.data === undefined) return "An error has occurred: " + props.query.error.message
 
 			const UrlSearchParams = new URLSearchParams(searchParams.toString())
-			pagination.setListTotalCount(props.query.data.pagination?.totalCount ?? 0)
+			pagination.setListTotalCount(props.query.data.totalCount)
 
 			return (
 				<>
@@ -40,9 +44,9 @@ const VocabularyList = () => {
 							</tr>
 						</thead>
 						<tbody>
-							{props.query.data.list.map((vocabularyData) => {
+							{props.query.data.dataArr.map((vocabularyData) => {
 								return (
-									<tr key={vocabularyData.id} className="hover hover:bg-">
+									<tr key={vocabularyData.id} className="hover">
 										<td className="text-center w-0">{vocabularyData.id}</td>
 										<td className="text-center w-48">{vocabularyData.word}</td>
 										<td className="text-left">{vocabularyData.meaning}</td>
@@ -72,7 +76,7 @@ const VocabularyList = () => {
 				</>
 			)
 		},
-		[searchParams],
+		[searchParams, pagination],
 	)
 
 	return (

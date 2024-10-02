@@ -1,35 +1,32 @@
-import { VocabularyIdT, VocabularyDataT, vocabularyDataArr } from "./data"
+import { VocabularyIdT, VocabularyT, myVocabularyList } from "./data"
+import { sleep } from "../../commonFun"
 
-const sleep = (delay: number) => new Promise((resolve) => setTimeout(resolve, delay))
-
-export type { VocabularyIdT, VocabularyDataT }
+export type { VocabularyIdT, VocabularyT }
 
 export type VocabularyListIdT = string
 
-export interface PaginationT {
-	totalCount: number
-}
-
-export interface getVocabularyListT {
-	list: VocabularyDataT[]
-	pagination?: PaginationT
-}
 export const getVocabularyList = async (request: {
-	// id?: VocabularyListIdT
-	limit: number
-	offset: number
-	pagination?: boolean
-}): Promise<getVocabularyListT> => {
+	id: VocabularyListIdT
+	page: number
+	pageSize: number
+}): Promise<{ dataArr: VocabularyT[]; totalCount: number }> => {
 	await sleep(1000)
 
-	let responseData: getVocabularyListT = {
-		list: vocabularyDataArr.slice(request.offset, request.offset + request.limit),
+	let dataArr: VocabularyT[] = []
+	if (request.id == "helloword") {
+		dataArr = myVocabularyList.dataArr
+	} else {
+		const dataArrStorage = localStorage.getItem(request.id)
+		if (dataArrStorage !== null) {
+			dataArr = JSON.parse(dataArrStorage)
+		} else {
+			throw new Error(`vocabulary list id "${request.id}" not existed.`)
+		}
 	}
 
-	if (request.pagination) {
-		responseData.pagination = {
-			totalCount: vocabularyDataArr.length,
-		}
+	const responseData: { dataArr: VocabularyT[]; totalCount: number } = {
+		dataArr: dataArr.slice(request.pageSize * (request.page - 1), request.pageSize * request.page),
+		totalCount: dataArr.length,
 	}
 
 	return responseData
