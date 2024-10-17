@@ -1,6 +1,6 @@
 import Cookies from "js-cookie"
 import { VocabularyIdT, VocabularyListIdT, VocabularyT } from "./vocabulary"
-import { dateFormat, randomInt, randomIntArr } from "../commonFun"
+import { dateFormat, randomInt, randomIntArr, sleep } from "../commonFun"
 import { myVocabularyList } from "./vocabulary/data"
 
 export type WordTestIdT = string
@@ -13,7 +13,7 @@ interface WordTestInfoT {
 	description?: string
 }
 
-interface QuestionT {
+export interface QuestionT {
 	type: "word" | "meaning"
 	correctAnswer: VocabularyIdT
 	wrongAnswer: VocabularyIdT[]
@@ -39,6 +39,8 @@ export const createWordTest = async (request: {
 	question: number
 	description?: string
 }): Promise<WordTestIdT> => {
+	await sleep(2000)
+
 	const newWordTestInfoArr: WordTestInfoT[] = JSON.parse(Cookies.get("wordTestInfoArr") ?? "[]")
 	const wordTestIdArr = newWordTestInfoArr.map((info) => info.id)
 

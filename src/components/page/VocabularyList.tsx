@@ -37,7 +37,7 @@ const VocabularyList = () => {
 					<table className="table">
 						<thead className="text-center">
 							<tr>
-								<th>ID</th>
+								<th>NO</th>
 								<th>word</th>
 								<th>meaning</th>
 								<th>dictionary</th>
@@ -81,7 +81,7 @@ const VocabularyList = () => {
 
 	return (
 		<>
-			<Header subTitle="Basic Vocabulary List" />
+			<Header subTitle="Vocabulary List" />
 			<MainContainer>
 				<div className="max-w-5xl m-auto py-20 flex flex-col gap-12 items-center">
 					<TableAndPagination query={vocabularyListQuery} />

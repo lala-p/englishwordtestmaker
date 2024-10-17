@@ -4,10 +4,10 @@ import { Outlet } from "react-router-dom"
 import useThemeStore from "../../hooks/useThemeStore"
 
 const Root = () => {
-	const { initTheme } = useThemeStore()
+	const { initThemeStore } = useThemeStore()
 
 	useEffect(() => {
-		initTheme()
+		initThemeStore()
 	}, [])
 
 	return (

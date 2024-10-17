@@ -6,6 +6,7 @@ import "./index.css"
 import Root from "./components/page/Root"
 import IndexHome from "./components/page/IndexHome"
 import VocabularyList from "./components/page/VocabularyList"
+import CreateWordTest from "./components/page/wordTest/Create"
 
 const queryClient = new QueryClient()
 
@@ -13,7 +14,8 @@ const router = createBrowserRouter(
 	createRoutesFromElements(
 		<Route path="/" element={<Root />} errorElement={<h1>error</h1>}>
 			<Route index element={<IndexHome />} />
-			<Route path="/vocabularylist/:vocabularylistId" element={<VocabularyList />} />
+			<Route path="/vocabularylist/:vocabularylistId?" element={<VocabularyList />} />
+			<Route path="/wordtest/create" element={<CreateWordTest />} />
 		</Route>,
 	),
 )

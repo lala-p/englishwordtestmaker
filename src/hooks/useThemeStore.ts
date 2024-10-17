@@ -24,7 +24,7 @@ type StateT = {
 }
 
 type ActionsT = {
-	initTheme: () => void
+	initThemeStore: () => void
 	// eslint-disable-next-line no-unused-vars
 	setTheme: (theme: ThemeT) => void
 }
@@ -35,7 +35,7 @@ const initialState: StateT = {
 
 const useThemeStore = create<StateT & ActionsT>((set) => ({
 	...initialState,
-	initTheme: () => {
+	initThemeStore: () => {
 		const savedTheme = localStorage.getItem("theme")
 		let changedTheme: ThemeT = "light"
 
