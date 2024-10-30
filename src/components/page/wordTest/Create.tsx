@@ -2,10 +2,11 @@ import { useEffect } from "react"
 import { useSearchParams, useNavigate } from "react-router-dom"
 import { useMutation } from "@tanstack/react-query"
 
+import useWordTestStore from "../../../hooks/useWordTestStore"
 import { createWordTest } from "../../../fetchdata/wordTest"
 
 const setting = {
-	vocabularyId: "helloword",
+	vocabularyListId: "helloword",
 	multipleChoice: 5,
 	question: 30,
 }
@@ -14,15 +15,20 @@ const CreateWordTest = () => {
 	const [searchParams] = useSearchParams()
 	const navigate = useNavigate()
 
+	const { current, setCurrentWordTest } = useWordTestStore()
+
 	const mutation = useMutation({
-		mutationFn: () =>
-			createWordTest({
+		mutationFn: async () => {
+			const newWordTestId = await createWordTest({
 				id: searchParams.get("id") ?? undefined,
-				vocabularyId: searchParams.get("vocabularyId") ?? setting.vocabularyId,
+				vocabularyListId: searchParams.get("vocabularyListId") ?? setting.vocabularyListId,
 				multipleChoice: searchParams.get("multipleChoice") === null ? setting.multipleChoice : Number(searchParams.get("multipleChoice")),
 				question: searchParams.get("question") === null ? setting.question : Number(searchParams.get("question")),
 				description: searchParams.get("description") ?? undefined,
-			}),
+			})
+
+			setCurrentWordTest(newWordTestId)
+		},
 	})
 
 	useEffect(() => {
@@ -32,7 +38,9 @@ const CreateWordTest = () => {
 
 	useEffect(() => {
 		if (mutation.isSuccess) {
-			navigate("/vocabularylist", { replace: true })
+			// try {
+			// 	navigate("/wordtest/question", { replace: true })
+			// } catch (e) {}
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [mutation.isSuccess])
