@@ -9,7 +9,6 @@ import { Pagination, PaginationLinkNav } from "../common/paginationNav/index,"
 const setting = {
 	pageSize: 50,
 }
-
 const VocabularyList = () => {
 	const { vocabularylistId } = useParams()
 	const [searchParams] = useSearchParams()

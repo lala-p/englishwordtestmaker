@@ -14,14 +14,16 @@ type StateT = {
 	}
 }
 
+/* eslint-disable no-unused-vars */
 type ActionsT = {
 	initWordTestStore: () => void
 	setCurrentWordTest: (wordTestId: WordTestIdT) => void
+	setCurrentAnswer: (questionIndex: number, vocabularyId: VocabularyIdT) => void
 }
 
 const initialState: StateT = {}
 
-const useWordTestStore = create<StateT & ActionsT>((set) => ({
+const useWordTestStore = create<StateT & ActionsT>((set, get) => ({
 	...initialState,
 	initWordTestStore: () => {},
 	setCurrentWordTest: (wordTestId: WordTestIdT) => {
@@ -51,7 +53,7 @@ const useWordTestStore = create<StateT & ActionsT>((set) => ({
 			}
 		}
 
-		let usedVocabularyIdSet = new Set<VocabularyIdT>()
+		const usedVocabularyIdSet = new Set<VocabularyIdT>()
 		questionArr.forEach((question) => {
 			usedVocabularyIdSet.add(question.correctAnswer)
 			question.wrongAnswers.forEach((answer) => {
@@ -59,8 +61,8 @@ const useWordTestStore = create<StateT & ActionsT>((set) => ({
 			})
 		})
 
-		let usedVocabularyIdArr: VocabularyIdT[] = Array.from(usedVocabularyIdSet)
-		let vocabularyDictionary: { [id: VocabularyIdT]: { word: string; meaning: string } } = {}
+		const usedVocabularyIdArr: VocabularyIdT[] = Array.from(usedVocabularyIdSet)
+		const vocabularyDictionary: { [id: VocabularyIdT]: { word: string; meaning: string } } = {}
 
 		vocabularyDataArr.forEach((data) => {
 			if (usedVocabularyIdArr.includes(data.id)) {
@@ -76,7 +78,7 @@ const useWordTestStore = create<StateT & ActionsT>((set) => ({
 				id: wordTestId,
 				vocabularyDictionary: vocabularyDictionary,
 				questionArr: questionArr,
-				answerArr: [],
+				answerArr: new Array(questionArr.length),
 			},
 		})
 
@@ -85,9 +87,18 @@ const useWordTestStore = create<StateT & ActionsT>((set) => ({
 				id: wordTestId,
 				vocabularyDictionary: vocabularyDictionary,
 				questionArr: questionArr,
-				answerArr: [],
+				answerArr: new Array(questionArr.length),
 			},
 		}))
+	},
+	setCurrentAnswer: (questionIndex: number, vocabularyId: VocabularyIdT) => {
+		const newCurrent = get().current
+		if (newCurrent === undefined || newCurrent.answerArr.length === 0) {
+			throw new Error(`current word test not existed.`)
+		}
+
+		newCurrent.answerArr[questionIndex] = vocabularyId
+		set(() => ({ current: newCurrent }))
 	},
 }))
 

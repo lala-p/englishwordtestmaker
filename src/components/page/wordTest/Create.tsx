@@ -10,7 +10,6 @@ const setting = {
 	multipleChoice: 5,
 	question: 30,
 }
-
 const CreateWordTest = () => {
 	const [searchParams] = useSearchParams()
 	const navigate = useNavigate()
@@ -42,7 +41,6 @@ const CreateWordTest = () => {
 			// 	navigate("/wordtest/question", { replace: true })
 			// } catch (e) {}
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [mutation.isSuccess])
 
 	if (mutation.isError) return <>error</>
