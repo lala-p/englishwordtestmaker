@@ -57,7 +57,6 @@ const Header = (props: { subTitle?: string }) => {
 					</div>
 				</div>
 			</div>
-			<div className=""></div>
 		</>
 	)
 }

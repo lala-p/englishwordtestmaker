@@ -26,22 +26,22 @@ const PaginationLinkNav = (props: { currentPage: number; lastPage: number; pageL
 					<>
 						<Link to={props.makePageLinkFun(1)}>
 							<button className="join-item btn btn-ghost text-xs" onClick={scrollTop}>
-								first
+								&lt;&lt;
 							</button>
 						</Link>
 						<Link to={props.makePageLinkFun(rowStartPage - 1)}>
 							<button className="join-item btn btn-ghost text-xs" onClick={scrollTop}>
-								prev
+								&lt;
 							</button>
 						</Link>
 					</>
 				) : (
 					<>
 						<button className="join-item btn btn-ghost text-xs disabled:bg-opacity-0" disabled={true}>
-							first
+							&lt;&lt;
 						</button>
 						<button className="join-item btn btn-ghost text-xs disabled:bg-opacity-0" disabled={true}>
-							prev
+							&lt;
 						</button>
 					</>
 				)
@@ -70,22 +70,22 @@ const PaginationLinkNav = (props: { currentPage: number; lastPage: number; pageL
 					<>
 						<Link to={props.makePageLinkFun(rowEndPage + 1)}>
 							<button className="join-item btn btn-ghost text-xs" onClick={scrollTop}>
-								next
+								&gt;
 							</button>
 						</Link>
 						<Link to={props.makePageLinkFun(props.lastPage)}>
 							<button className="join-item btn btn-ghost text-xs" onClick={scrollTop}>
-								last
+								&gt;&gt;
 							</button>
 						</Link>
 					</>
 				) : (
 					<>
 						<button className="join-item btn btn-ghost text-xs disabled:bg-opacity-0" disabled={true}>
-							next
+							&gt;
 						</button>
 						<button className="join-item btn btn-ghost text-xs disabled:bg-opacity-0" disabled={true}>
-							last
+							&gt;&gt;
 						</button>
 					</>
 				)
