@@ -19,7 +19,7 @@ const router = createBrowserRouter(
 			<Route path="/vocabularylist/:vocabularylistId?" element={<VocabularyList />} />
 			<Route path="/wordtest/create" element={<CreateWordTest />} />
 
-			<Route path="/wordtest/step/:stepNum" element={<Step />} />
+			<Route path="/wordtest/step/:step" element={<Step />} />
 			<Route path="/wordtest/result" element={<Step />} />
 
 			<Route path="*" element={<NotFound />} />

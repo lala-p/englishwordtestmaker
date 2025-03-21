@@ -9,13 +9,10 @@ export interface VocabularyT {
 
 export type VocabularyListIdT = string
 
-export interface VocabularyListInfoT {
+export interface VocabularyListT {
 	id: VocabularyListIdT
 	description?: string
 	createdDate: string
-}
-
-export interface VocabularyListT extends VocabularyListInfoT {
 	dataArr: VocabularyT[]
 }
 

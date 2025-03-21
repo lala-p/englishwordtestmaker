@@ -7,14 +7,14 @@ import { createWordTest } from "../../../fetchdata/wordTest"
 
 const setting = {
 	vocabularyListId: "helloword",
-	multipleChoice: 5,
-	question: 30,
+	multipleChoice: 4,
+	question: 5,
 }
 const CreateWordTest = () => {
 	const [searchParams] = useSearchParams()
 	const navigate = useNavigate()
 
-	const { current, setCurrentWordTest } = useWordTestStore()
+	const { setCurrentWordTest } = useWordTestStore()
 
 	const mutation = useMutation({
 		mutationFn: async () => {
@@ -37,13 +37,20 @@ const CreateWordTest = () => {
 
 	useEffect(() => {
 		if (mutation.isSuccess) {
-			// try {
-			// 	navigate("/wordtest/question", { replace: true })
-			// } catch (e) {}
+			navigate("/wordtest/step/1", { replace: true })
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [mutation.isSuccess])
 
-	if (mutation.isError) return <>error</>
+	if (mutation.isError) {
+		return (
+			<>
+				<div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+					<h1>error</h1>
+				</div>
+			</>
+		)
+	}
 
 	return (
 		<>

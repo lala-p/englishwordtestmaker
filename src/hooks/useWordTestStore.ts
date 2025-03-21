@@ -10,7 +10,8 @@ type StateT = {
 		id?: WordTestIdT
 		vocabularyDictionary: { [id: VocabularyIdT]: { word: string; meaning: string } }
 		questionArr: QuestionT[]
-		answerArr: Array<number>
+		answerArr: Array<VocabularyIdT | null>
+		answerCheckNum: number
 	}
 }
 
@@ -19,6 +20,7 @@ type ActionsT = {
 	initWordTestStore: () => void
 	setCurrentWordTest: (wordTestId: WordTestIdT) => void
 	setCurrentAnswer: (questionIndex: number, vocabularyId: VocabularyIdT) => void
+	unsetCurrentAnswer: (questionIndex: number) => void
 }
 
 const initialState: StateT = {}
@@ -55,8 +57,7 @@ const useWordTestStore = create<StateT & ActionsT>((set, get) => ({
 
 		const usedVocabularyIdSet = new Set<VocabularyIdT>()
 		questionArr.forEach((question) => {
-			usedVocabularyIdSet.add(question.correctAnswer)
-			question.wrongAnswers.forEach((answer) => {
+			question.answerIds.forEach((answer) => {
 				usedVocabularyIdSet.add(answer)
 			})
 		})
@@ -73,21 +74,16 @@ const useWordTestStore = create<StateT & ActionsT>((set, get) => ({
 			}
 		})
 
-		console.log({
-			current: {
-				id: wordTestId,
-				vocabularyDictionary: vocabularyDictionary,
-				questionArr: questionArr,
-				answerArr: new Array(questionArr.length),
-			},
-		})
+		const newAnswerArr = new Array(questionArr.length)
+		newAnswerArr.fill(null)
 
 		set(() => ({
 			current: {
 				id: wordTestId,
 				vocabularyDictionary: vocabularyDictionary,
 				questionArr: questionArr,
-				answerArr: new Array(questionArr.length),
+				answerArr: newAnswerArr,
+				answerCheckNum: 0,
 			},
 		}))
 	},
@@ -97,7 +93,24 @@ const useWordTestStore = create<StateT & ActionsT>((set, get) => ({
 			throw new Error(`current word test not existed.`)
 		}
 
+		if (newCurrent.answerArr[questionIndex] === null) {
+			newCurrent.answerCheckNum = newCurrent.answerCheckNum + 1
+		}
 		newCurrent.answerArr[questionIndex] = vocabularyId
+
+		set(() => ({ current: newCurrent }))
+	},
+	unsetCurrentAnswer: (questionIndex: number) => {
+		const newCurrent = get().current
+		if (newCurrent === undefined || newCurrent.answerArr.length === 0) {
+			throw new Error(`current word test not existed.`)
+		}
+
+		if (newCurrent.answerArr[questionIndex] != null) {
+			newCurrent.answerCheckNum = newCurrent.answerCheckNum - 1
+		}
+		newCurrent.answerArr[questionIndex] = null
+
 		set(() => ({ current: newCurrent }))
 	},
 }))

@@ -24,3 +24,7 @@ export const randomIntArr = (length: number, max: number, min: number = 0): numb
 
 	return arr
 }
+
+export const scrollTop = () => {
+	window.scrollTo(0, 0)
+}

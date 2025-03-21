@@ -2,8 +2,9 @@ import { ReactNode, useCallback, useMemo } from "react"
 import { Link, useParams, useSearchParams } from "react-router-dom"
 import { useQuery, UseQueryResult } from "@tanstack/react-query"
 
-import { Header, MainContainer } from "../common/semantic"
 import { VocabularyT, getVocabularyList } from "../../fetchdata/vocabulary"
+
+import { Header, MainContainer } from "../common/semantic"
 import { Pagination, PaginationLinkNav } from "../common/paginationNav/index,"
 
 const setting = {

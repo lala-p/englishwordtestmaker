@@ -14,10 +14,12 @@ export interface WordTestInfoT {
 	description?: string
 }
 
+export type QuestionTypeT = "word" | "meaning"
+
 export interface QuestionT {
-	type: "word" | "meaning"
-	correctAnswer: VocabularyIdT
-	wrongAnswers: VocabularyIdT[]
+	type: QuestionTypeT
+	correctAnswerId: VocabularyIdT
+	answerIds: VocabularyIdT[]
 }
 
 interface WordTestT extends WordTestInfoT {
@@ -88,8 +90,8 @@ export const createWordTest = async (request: {
 
 		questionArr.push({
 			type: randomInt(1) == 0 ? "word" : "meaning",
-			correctAnswer: answerArr[0],
-			wrongAnswers: answerArr.slice(1),
+			correctAnswerId: answerArr[randomInt(request.multipleChoice - 1)],
+			answerIds: answerArr,
 		})
 	}
 
