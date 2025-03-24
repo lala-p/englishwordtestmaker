@@ -8,6 +8,7 @@ import IndexHome from "./components/page/IndexHome"
 import VocabularyList from "./components/page/VocabularyList"
 import CreateWordTest from "./components/page/wordTest/Create"
 import Step from "./components/page/wordTest/Step"
+import Result from "./components/page/wordTest/Result"
 import NotFound from "./components/page/NotFound"
 
 const queryClient = new QueryClient()
@@ -20,7 +21,7 @@ const router = createBrowserRouter(
 			<Route path="/wordtest/create" element={<CreateWordTest />} />
 
 			<Route path="/wordtest/step/:step" element={<Step />} />
-			<Route path="/wordtest/result" element={<Step />} />
+			<Route path="/wordtest/result" element={<Result />} />
 
 			<Route path="*" element={<NotFound />} />
 		</Route>,

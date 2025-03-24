@@ -37,20 +37,20 @@ const VocabularyList = () => {
 					<table className="table">
 						<thead className="text-center">
 							<tr>
-								<th>NO</th>
+								<th className="hidden md:block">NO</th>
 								<th>word</th>
 								<th>meaning</th>
-								<th>dictionary</th>
+								<th className="hidden md:block">dictionary</th>
 							</tr>
 						</thead>
 						<tbody>
 							{props.query.data.dataArr.map((vocabularyData) => {
 								return (
 									<tr key={vocabularyData.id} className="hover">
-										<td className="text-center w-0">{vocabularyData.id}</td>
-										<td className="text-center w-48">{vocabularyData.word}</td>
+										<td className="text-center hidden md:block">{vocabularyData.id}</td>
+										<td className="text-center">{vocabularyData.word}</td>
 										<td className="text-left">{vocabularyData.meaning}</td>
-										<td className="text-right w-48">
+										<td className="text-right hidden md:block">
 											{vocabularyData.dictionaryLink !== undefined ? (
 												<Link to={vocabularyData.dictionaryLink} target="_blank" className="link link-info">
 													{vocabularyData.word}
@@ -67,7 +67,7 @@ const VocabularyList = () => {
 					<PaginationLinkNav
 						currentPage={pagination.currentPage}
 						lastPage={pagination.lastPage}
-						pageLimitSize={10}
+						pageLimitSize={5}
 						makePageLinkFun={(page) => {
 							UrlSearchParams.set("page", page.toString())
 							return "?" + UrlSearchParams.toString()
