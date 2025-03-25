@@ -1,3 +1,5 @@
+import { QuestionTypeT } from "./fetchdata/wordTest"
+
 export const sleep = (delay: number) => new Promise((resolve) => setTimeout(resolve, delay))
 
 export const dateFormat = (date: Date): string => {
@@ -27,4 +29,11 @@ export const randomIntArr = (length: number, max: number, min: number = 0): numb
 
 export const scrollTop = () => {
 	window.scrollTo(0, 0)
+}
+
+export const getTypeQuestion = (questionType: QuestionTypeT): string => {
+	return {
+		word: "What is the word that has this meaning?",
+		meaning: "What is meaning of this word?",
+	}[questionType]
 }

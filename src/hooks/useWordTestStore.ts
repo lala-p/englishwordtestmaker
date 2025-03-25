@@ -5,12 +5,18 @@ import { QuestionT, WordTestIdT, WordTestInfoT } from "../fetchdata/wordTest"
 import { VocabularyIdT, VocabularyT } from "../fetchdata/vocabulary"
 import { myVocabularyList } from "../fetchdata/vocabulary/data"
 
+export interface StepT extends QuestionT {
+	id: string
+	answerTarget: string
+	answers: { id: VocabularyIdT; data: string }[]
+	yourAnswer: VocabularyIdT | null
+}
+
 type StateT = {
 	current?: {
 		id?: WordTestIdT
 		vocabularyDictionary: { [id: VocabularyIdT]: { word: string; meaning: string } }
-		questionArr: QuestionT[]
-		answerArr: Array<VocabularyIdT | null>
+		stepArr: StepT[]
 		answerCheckNum: number
 	}
 }
@@ -74,14 +80,44 @@ const useWordTestStore = create<StateT & ActionsT>((set, get) => ({
 			}
 		})
 
-		const newAnswerArr = new Array(questionArr.length)
+		const stepArr: StepT[] = questionArr.map<StepT>((q, index) => {
+			const step: StepT = {
+				id: `step${index + 1}`,
+				type: q.type,
+				answerIds: q.answerIds,
+				correctAnswerId: q.correctAnswerId,
+				answerTarget: "",
+				answers: [],
+				yourAnswer: null,
+			}
+
+			switch (q.type) {
+				case "word":
+					step.answerTarget = vocabularyDictionary[q.correctAnswerId].meaning
+					step.answers = q.answerIds.map((id) => {
+						return { id, data: vocabularyDictionary[id].word }
+					})
+					break
+
+				case "meaning":
+					step.answerTarget = vocabularyDictionary[q.correctAnswerId].word
+					step.answers = q.answerIds.map((id) => {
+						return { id, data: vocabularyDictionary[id].meaning }
+					})
+					break
+			}
+
+			return step
+		})
+
+		const newAnswerArr = new Array(stepArr.length)
 		newAnswerArr.fill(null)
 
 		set(() => ({
 			current: {
 				id: wordTestId,
 				vocabularyDictionary: vocabularyDictionary,
-				questionArr: questionArr,
+				stepArr: stepArr,
 				answerArr: newAnswerArr,
 				answerCheckNum: 0,
 			},
@@ -89,27 +125,27 @@ const useWordTestStore = create<StateT & ActionsT>((set, get) => ({
 	},
 	setCurrentAnswer: (questionIndex: number, vocabularyId: VocabularyIdT) => {
 		const newCurrent = get().current
-		if (newCurrent === undefined || newCurrent.answerArr.length === 0) {
+		if (newCurrent === undefined || newCurrent.stepArr.length === 0) {
 			throw new Error(`current word test not existed.`)
 		}
 
-		if (newCurrent.answerArr[questionIndex] === null) {
+		if (newCurrent.stepArr[questionIndex].yourAnswer === null) {
 			newCurrent.answerCheckNum = newCurrent.answerCheckNum + 1
 		}
-		newCurrent.answerArr[questionIndex] = vocabularyId
+		newCurrent.stepArr[questionIndex].yourAnswer = vocabularyId
 
 		set(() => ({ current: newCurrent }))
 	},
 	unsetCurrentAnswer: (questionIndex: number) => {
 		const newCurrent = get().current
-		if (newCurrent === undefined || newCurrent.answerArr.length === 0) {
+		if (newCurrent === undefined || newCurrent.stepArr.length === 0) {
 			throw new Error(`current word test not existed.`)
 		}
 
-		if (newCurrent.answerArr[questionIndex] != null) {
+		if (newCurrent.stepArr[questionIndex].yourAnswer != null) {
 			newCurrent.answerCheckNum = newCurrent.answerCheckNum - 1
 		}
-		newCurrent.answerArr[questionIndex] = null
+		newCurrent.stepArr[questionIndex].yourAnswer = null
 
 		set(() => ({ current: newCurrent }))
 	},

@@ -42,7 +42,7 @@ export const createWordTest = async (request: {
 	question: number
 	description?: string
 }): Promise<WordTestIdT> => {
-	await sleep(2000)
+	await sleep(1000)
 
 	const newWordTestInfoArr: WordTestInfoT[] = JSON.parse(Cookies.get("wordTestInfoArr") ?? "[]")
 	const wordTestIdArr = newWordTestInfoArr.map((info) => info.id)
