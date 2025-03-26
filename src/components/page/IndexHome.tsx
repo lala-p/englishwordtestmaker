@@ -12,10 +12,10 @@ const IndexHome = () => {
 						to={`/wordtest/create?vocabularyId=helloword`}
 						className="btn btn-block glass bg-primary text-primary-content hover:bg-primary hover:bg-opacity-70"
 					>
-						Word Test With The Vocabulary List Offered Free
+						Word Test With The Vocabulary List Of This Developer
 					</Link>
 					<Link to={`/vocabularylist`} className="btn btn-block glass bg-primary text-primary-content hover:bg-primary hover:bg-opacity-70">
-						The Vocabulary List Offered Free
+						The Vocabulary List Of This Developer
 					</Link>
 				</div>
 			</MainContainer>

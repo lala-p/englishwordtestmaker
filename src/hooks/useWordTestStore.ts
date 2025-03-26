@@ -1,16 +1,8 @@
 import { create } from "zustand"
 import Cookies from "js-cookie"
 
-import { QuestionT, WordTestIdT, WordTestInfoT } from "../fetchdata/wordTest"
-import { VocabularyIdT, VocabularyT } from "../fetchdata/vocabulary"
+import { QuestionT, WordTestIdT, WordTestT, VocabularyIdT, VocabularyT, StepT } from "../types"
 import { myVocabularyList } from "../fetchdata/vocabulary/data"
-
-export interface StepT extends QuestionT {
-	id: string
-	answerTarget: string
-	answers: { id: VocabularyIdT; data: string }[]
-	yourAnswer: VocabularyIdT | null
-}
 
 type StateT = {
 	current?: {
@@ -35,29 +27,29 @@ const useWordTestStore = create<StateT & ActionsT>((set, get) => ({
 	...initialState,
 	initWordTestStore: () => {},
 	setCurrentWordTest: (wordTestId: WordTestIdT) => {
-		const wordTestInfoArr: WordTestInfoT[] = JSON.parse(Cookies.get("wordTestInfoArr") ?? "[]")
-		const wordTestInfo: WordTestInfoT | undefined = wordTestInfoArr.find((info) => {
+		const wordTestArr: WordTestT[] = JSON.parse(Cookies.get("wordTestArr") ?? "[]")
+		const wordTest: WordTestT | undefined = wordTestArr.find((info) => {
 			if (info.id == wordTestId) {
 				return info
 			}
 		})
 		const questionStorage = localStorage.getItem(wordTestId)
 
-		if (wordTestInfo === undefined || questionStorage === null) {
+		if (wordTest === undefined || questionStorage === null) {
 			throw new Error(`word test id "${wordTestId}" not existed.`)
 		}
 
 		const questionArr: QuestionT[] = JSON.parse(questionStorage)
 
 		let vocabularyDataArr: VocabularyT[]
-		if (wordTestInfo.VocabularyListId === "helloword") {
+		if (wordTest.VocabularyListId === "helloword") {
 			vocabularyDataArr = myVocabularyList.dataArr
 		} else {
-			const vocabularyStorage = localStorage.getItem(wordTestInfo.VocabularyListId)
+			const vocabularyStorage = localStorage.getItem(wordTest.VocabularyListId)
 			if (vocabularyStorage != null) {
 				vocabularyDataArr = JSON.parse(vocabularyStorage)
 			} else {
-				throw new Error(`vocabulary list id "${wordTestInfo.VocabularyListId}" not existed.`)
+				throw new Error(`vocabulary list id "${wordTest.VocabularyListId}" not existed.`)
 			}
 		}
 

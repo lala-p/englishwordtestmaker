@@ -8,7 +8,7 @@ import { createWordTest } from "../../../fetchdata/wordTest"
 const setting = {
 	vocabularyListId: "helloword",
 	multipleChoice: 4,
-	question: 5,
+	question: 30,
 }
 const CreateWordTest = () => {
 	const [searchParams] = useSearchParams()

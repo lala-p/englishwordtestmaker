@@ -1,14 +1,30 @@
-import { useMemo } from "react"
+import { useEffect, useMemo } from "react"
+import { useMutation } from "@tanstack/react-query"
 
+import { StepT } from "../../../types"
 import useThemeStore from "../../../hooks/useThemeStore"
-import useWordTestStore, { StepT } from "../../../hooks/useWordTestStore"
+import useWordTestStore from "../../../hooks/useWordTestStore"
+import { deleteWordTest } from "../../../fetchdata/wordTest"
 
 import { Header, MainContainer } from "../../common/semantic"
-import { getTypeQuestion } from "../../../commonFun"
+import { getQuestionTypeText } from "../../../commonFun"
 
 const Result = () => {
 	const { theme } = useThemeStore()
 	const { current } = useWordTestStore()
+
+	const mutation = useMutation({
+		mutationFn: async () => {
+			if (current !== undefined && current.id !== undefined) {
+				await deleteWordTest({ id: current.id })
+			}
+		},
+	})
+
+	useEffect(() => {
+		mutation.mutate()
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
 
 	const wrongAnswers = useMemo<StepT[]>(() => {
 		if (current === undefined) return []
@@ -45,7 +61,7 @@ const Result = () => {
 						<div className="px-1" key={answer.id}>
 							<div className="px-1">
 								<span className="font-bold text-xl">Q</span>
-								<span className="ml-2">{getTypeQuestion(answer.type)}</span>
+								<span className="ml-2">{getQuestionTypeText(answer.type)}</span>
 								<div className="text-center py-7 md:py-14">{answer.answerTarget}</div>
 							</div>
 							<div className={`rounded-xl overflow-hidden shadow ${theme == "dark" ? "shadow-gray-600" : ""}`}>

@@ -1,20 +1,4 @@
-export type VocabularyIdT = number
-
-export interface VocabularyT {
-	id: VocabularyIdT
-	word: string
-	meaning: string
-	dictionaryLink?: string
-}
-
-export type VocabularyListIdT = string
-
-export interface VocabularyListT {
-	id: VocabularyListIdT
-	description?: string
-	createdDate: string
-	dataArr: VocabularyT[]
-}
+import { VocabularyListT } from "../../types"
 
 export const myVocabularyList: VocabularyListT = {
 	id: "helloword",

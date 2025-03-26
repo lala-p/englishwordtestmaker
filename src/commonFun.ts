@@ -1,4 +1,4 @@
-import { QuestionTypeT } from "./fetchdata/wordTest"
+import { QuestionTypeT } from "./types"
 
 export const sleep = (delay: number) => new Promise((resolve) => setTimeout(resolve, delay))
 
@@ -31,9 +31,9 @@ export const scrollTop = () => {
 	window.scrollTo(0, 0)
 }
 
-export const getTypeQuestion = (questionType: QuestionTypeT): string => {
+export const getQuestionTypeText = (type: QuestionTypeT): string => {
 	return {
 		word: "What is the word that has this meaning?",
 		meaning: "What is meaning of this word?",
-	}[questionType]
+	}[type]
 }

@@ -1,12 +1,13 @@
 import { useMemo, useCallback } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 
-import { getTypeQuestion, scrollTop } from "../../../commonFun"
-
-import useWordTestStore, { StepT } from "../../../hooks/useWordTestStore"
+import { StepT } from "../../../types"
+import useWordTestStore from "../../../hooks/useWordTestStore"
 
 import { Header, MainContainer } from "../../common/semantic"
 import NotFound from "../NotFound"
+
+import { getQuestionTypeText, scrollTop } from "../../../commonFun"
 
 const Step = () => {
 	const { step } = useParams()
@@ -49,7 +50,7 @@ const Step = () => {
 			<MainContainer>
 				<div className="max-w-3xl m-auto mt-4 md:mt-8 px-2">
 					<span className="text-xl font-bold mr-3">Step {stepNum}.</span>
-					<span className="text-sm md:text-base">{getTypeQuestion(currentStep.type)}</span>
+					<span className="text-sm md:text-base">{getQuestionTypeText(currentStep.type)}</span>
 					<div className="text-center font-bold text-3xl md:text-4xl py-16 md:py-32">{currentStep.answerTarget}</div>
 				</div>
 

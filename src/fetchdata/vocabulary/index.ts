@@ -1,9 +1,6 @@
-import { VocabularyIdT, VocabularyT, myVocabularyList } from "./data"
+import { VocabularyListIdT, VocabularyT } from "../../types"
+import { myVocabularyList } from "./data"
 import { sleep } from "../../commonFun"
-
-export type { VocabularyIdT, VocabularyT }
-
-export type VocabularyListIdT = string
 
 export const getVocabularyList = async (request: {
 	id: VocabularyListIdT
@@ -20,7 +17,7 @@ export const getVocabularyList = async (request: {
 		if (dataArrStorage !== null) {
 			dataArr = JSON.parse(dataArrStorage)
 		} else {
-			throw new Error(`vocabulary list id "${request.id}" not existed.`)
+			throw new Error(`vocabulary list id - "${request.id}" not existed.`)
 		}
 	}
 

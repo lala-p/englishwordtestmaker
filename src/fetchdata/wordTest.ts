@@ -1,39 +1,8 @@
 import Cookies from "js-cookie"
 
-import { VocabularyIdT, VocabularyListIdT, VocabularyT } from "./vocabulary"
-import { dateFormat, randomInt, randomIntArr, sleep } from "../commonFun"
+import { VocabularyT, VocabularyListIdT, WordTestIdT, WordTestT, QuestionT } from "../types"
 import { myVocabularyList } from "./vocabulary/data"
-
-export type WordTestIdT = string
-
-export interface WordTestInfoT {
-	id: WordTestIdT
-	VocabularyListId: VocabularyListIdT
-	multipleChoice: number
-	createdDate: string
-	description?: string
-}
-
-export type QuestionTypeT = "word" | "meaning"
-
-export interface QuestionT {
-	type: QuestionTypeT
-	correctAnswerId: VocabularyIdT
-	answerIds: VocabularyIdT[]
-}
-
-interface WordTestT extends WordTestInfoT {
-	questionArr: QuestionT[]
-}
-
-export const getWordTestInfoArr = async (): Promise<WordTestInfoT[]> => {
-	return JSON.parse(Cookies.get("wordTestInfoArr") ?? "[]")
-}
-
-export const getWordTestIdArr = async (): Promise<WordTestIdT[]> => {
-	const wordTestInfoArr: WordTestInfoT[] = JSON.parse(Cookies.get("wordTestInfoArr") ?? "[]")
-	return wordTestInfoArr.map((info) => info.id)
-}
+import { dateFormat, randomInt, randomIntArr, sleep } from "../commonFun"
 
 export const createWordTest = async (request: {
 	id?: WordTestIdT
@@ -44,8 +13,8 @@ export const createWordTest = async (request: {
 }): Promise<WordTestIdT> => {
 	await sleep(1000)
 
-	const newWordTestInfoArr: WordTestInfoT[] = JSON.parse(Cookies.get("wordTestInfoArr") ?? "[]")
-	const wordTestIdArr = newWordTestInfoArr.map((info) => info.id)
+	const newWordTestArr: WordTestT[] = JSON.parse(Cookies.get("wordTestArr") ?? "[]")
+	const wordTestIdArr = newWordTestArr.map((info) => info.id)
 
 	let newId = request.id ?? ""
 	if (request.id === undefined) {
@@ -60,7 +29,7 @@ export const createWordTest = async (request: {
 		}
 	}
 
-	const newWordTestInfo: WordTestInfoT = {
+	const newWordTest: WordTestT = {
 		id: newId,
 		VocabularyListId: request.vocabularyListId,
 		multipleChoice: request.multipleChoice,
@@ -68,7 +37,7 @@ export const createWordTest = async (request: {
 	}
 
 	if (request.description !== undefined) {
-		newWordTestInfo.description = request.description
+		newWordTest.description = request.description
 	}
 
 	let vocabularyDataArr: VocabularyT[]
@@ -79,7 +48,7 @@ export const createWordTest = async (request: {
 		if (vocabularyStorage != null) {
 			vocabularyDataArr = JSON.parse(vocabularyStorage)
 		} else {
-			throw new Error(`vocabulary list id "${request.vocabularyListId}" not existed.`)
+			throw new Error(`vocabulary list - id "${request.vocabularyListId}" not existed.`)
 		}
 	}
 
@@ -95,41 +64,40 @@ export const createWordTest = async (request: {
 		})
 	}
 
-	newWordTestInfoArr.push(newWordTestInfo)
-	Cookies.set("wordTestInfoArr", JSON.stringify(newWordTestInfoArr))
+	newWordTestArr.push(newWordTest)
+	Cookies.set("wordTestArr", JSON.stringify(newWordTestArr))
 	localStorage.setItem(newId, JSON.stringify(questionArr))
 
 	return newId
 }
 
-export const getWordTest = async (request: { id: WordTestIdT }): Promise<WordTestT> => {
-	const wordTestInfoArr: WordTestInfoT[] = JSON.parse(Cookies.get("wordTestInfoArr") ?? "[]")
-	const wordTestInfo: WordTestInfoT | undefined = wordTestInfoArr.find((info) => {
-		if (info.id == request.id) {
-			return info
-		}
-	})
-	const questionStorage = localStorage.getItem(request.id)
+// export const getWordTest = async (request: { id: WordTestIdT }): Promise<WordTestT> => {
+// 	const wordTestArr: WordTestT[] = JSON.parse(Cookies.get("wordTestArr") ?? "[]")
+// 	const wordTest: WordTestT | undefined = wordTestArr.find((info) => {
+// 		if (info.id == request.id) {
+// 			return info
+// 		}
+// 	})
+// 	const questionStorage = localStorage.getItem(request.id)
 
-	if (wordTestInfo !== undefined && questionStorage !== null) {
-		const questionArr: QuestionT[] = JSON.parse(questionStorage)
-
-		return {
-			...wordTestInfo,
-			questionArr: questionArr,
-		}
-	} else {
-		throw new Error(`word test "${request.id}" not existed.`)
-	}
-}
+// 	if (wordTest !== undefined && questionStorage !== null) {
+// 		return wordTest
+// 	} else {
+// 		throw new Error(`word test "${request.id}" not existed.`)
+// 	}
+// }
 
 export const deleteWordTest = async (request: { id: WordTestIdT }): Promise<boolean> => {
-	const wordTestInfoArrBefore: WordTestInfoT[] = JSON.parse(Cookies.get("wordTestInfoArr") ?? "[]")
+	const wordTestArrBefore: WordTestT[] = JSON.parse(Cookies.get("wordTestArr") ?? "[]")
 
-	Cookies.set("wordTestInfoArr", JSON.stringify(wordTestInfoArrBefore.filter((info) => info.id !== request.id)))
+	Cookies.set("wordTestArr", JSON.stringify(wordTestArrBefore.filter((info) => info.id !== request.id)))
 	localStorage.removeItem(request.id)
 
-	const wordTestInfoArrAfter: WordTestInfoT[] = JSON.parse(Cookies.get("wordTestInfoArr") ?? "[]")
+	const wordTestArrAfter: WordTestT[] = JSON.parse(Cookies.get("wordTestArr") ?? "[]")
 
-	return localStorage.getItem(request.id) === null && wordTestInfoArrAfter.filter((info) => info.id === request.id).length === 0
+	return localStorage.getItem(request.id) === null && wordTestArrAfter.filter((info) => info.id === request.id).length === 0
 }
+
+// export const getWordTestArr = async (): Promise<WordTestT[]> => {
+// 	return JSON.parse(Cookies.get("wordTestArr") ?? "[]")
+// }
